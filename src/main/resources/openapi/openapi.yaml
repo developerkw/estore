@@ -204,15 +204,6 @@ paths:
             - read:baskets
 components:
   schemas:
-    DiscountDto:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        name:
-          type: string
-          example: BUY_1_50%_OFF_THE_SECOND
     ProductDto:
       required:
         - id
@@ -241,7 +232,8 @@ components:
           type: array
           uniqueItems: true
           items:
-            $ref: '#/components/schemas/DiscountDto'
+            type: string
+            example: BUY_1_50%_OFF_THE_SECOND
     BasketDto:
       required:
         - username
