@@ -1,0 +1,262 @@
+openapi: 3.0.3
+info:
+  title: Estore- OpenAPI 3.0
+  description: |-
+    This is an electronics store based on the OpenAPI 3.0 specification.
+  version: 1.0.0
+
+tags:
+  - name: product
+    description: Product management
+  - name: basket
+    description: To and and remove products from basket and generate receipt
+paths:
+  /product:
+    put:
+      tags:
+        - product
+      summary: Update an existing product
+      description: Update an existing product by Id
+      operationId: updateProduct
+      requestBody:
+        description: Update an existent product in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductDto'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDto'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Product not found
+        '405':
+          description: Validation exception
+    post:
+      tags:
+        - product
+      summary: Add a new product to the store
+      description: Add a new product to the store
+      operationId: addProduct
+      requestBody:
+        description: Create a new product in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductDto'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDto'
+        '405':
+          description: Invalid input
+      security:
+        - basic_auth:
+            - write:products
+            - read:products
+  /product/{productId}:
+    get:
+      tags:
+        - product
+      summary: Find product by ID
+      description: Returns a single product
+      operationId: getProductById
+      parameters:
+        - name: productId
+          in: path
+          description: ID of product to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDto'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Product not found
+      security:
+        - basic_auth:
+            - write:products
+            - read:products
+    delete:
+      tags:
+        - product
+      summary: Deletes a product
+      description: delete a product
+      operationId: deleteProduct
+      parameters:
+        - name: productId
+          in: path
+          description: Product id to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '400':
+          description: Invalid product value
+      security:
+        - basic_auth:
+            - write:products
+            - read:products
+  /basket:
+    put:
+      tags:
+        - basket
+      summary: Update an existing basket
+      description: Update an existing basket by username
+      operationId: updateBasket
+      requestBody:
+        description: Update an existent basket in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BasketDto'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasketDto'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Basket not found
+        '405':
+          description: Validation exception
+    post:
+      tags:
+        - basket
+      summary: Add a new basket
+      description: Add a new basket
+      operationId: addBasket
+      requestBody:
+        description: Create a new basket in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BasketDto'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasketDto'
+        '405':
+          description: Invalid input
+      security:
+        - basic_auth:
+            - write:baskets
+            - read:baskets
+    get:
+      tags:
+        - basket
+      summary: Find basket by user name
+      description: Returns a basket
+      operationId: getBasket
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasketDto'
+        '400':
+          description: Invalid user name supplied
+        '404':
+          description: Basket not found
+      security:
+        - basic_auth:
+            - write:baskets
+            - read:baskets
+    delete:
+      tags:
+        - basket
+      summary: Deletes a basket
+      description: delete a basket
+      operationId: deleteBasket
+      responses:
+        '400':
+          description: Invalid user name value
+      security:
+        - basic_auth:
+            - write:baskets
+            - read:baskets
+components:
+  schemas:
+    DiscountDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+          example: BUY_1_50%_OFF_THE_SECOND
+    ProductDto:
+      required:
+        - id
+        - name
+        - price
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        name:
+          type: string
+          example: Samsung 32 inches monitor
+        category:
+          type: string
+          example: monitor
+        stock:
+          type: integer
+          format: int32
+          example: 89
+        price:
+          type: number
+          example: 399.9
+        discounts:
+          type: array
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/DiscountDto'
+    BasketDto:
+      required:
+        - username
+      type: object
+      properties:
+        username:
+          type: string
+          example: testuser
+        products:
+          type: array
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/ProductDto'
+
+  securitySchemes:
+    basic_auth:
+      type: http
+      scheme: basic
