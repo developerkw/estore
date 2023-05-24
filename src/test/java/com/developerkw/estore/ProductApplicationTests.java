@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -91,6 +92,34 @@ class ProductApplicationTests {
 
 		assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
 		assertNull(response.getBody());
+	}
+
+	@Test
+	void shouldUpdateAnExistingProductWithNewDiscount() {
+		ResponseEntity<Product> response = restTemplate
+			.withBasicAuth("bullish", "abc123")
+			.getForEntity("/product/1", Product.class);
+		assertEquals(HttpStatus.OK, response.getStatusCode());
+
+		var productResponse = response.getBody();
+		assertEquals(1L, productResponse.getId());
+		assertEquals(Set.of("BUY_3_GET_1_FREE"), productResponse.getDiscounts());
+
+		var newSetOfDiscounts = Set.of("BUY_3_GET_1_FREE", "20%OFF");
+		productResponse.setDiscounts(newSetOfDiscounts);
+		HttpEntity<Product> request = new HttpEntity<>(productResponse);
+		ResponseEntity<Void> updateResponse = restTemplate
+			.withBasicAuth("bullish", "abc123")
+			.exchange("/product", HttpMethod.PUT, request, Void.class);
+		assertThat(updateResponse.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+
+		ResponseEntity<Product> responseAfterUpdate = restTemplate
+			.withBasicAuth("bullish", "abc123")
+			.getForEntity("/product/1", Product.class);
+		assertEquals(HttpStatus.OK, responseAfterUpdate.getStatusCode());
+		var productResponseAfterUpdate = response.getBody();
+		assertEquals(1L, productResponseAfterUpdate.getId());
+		assertEquals(newSetOfDiscounts, productResponseAfterUpdate.getDiscounts());
 	}
 
 	@Test
