@@ -28,7 +28,7 @@ class ProductApplicationTests {
 
 	@Test
 	void shouldCreateANewProduct() {
-		var newProduct = ModelUtil.createProduct(2L, "Mac Book Pro", "Laptop", 120,
+		var newProduct = ModelUtil.createProduct(4L, "Mac Book Pro", "Laptop", 120,
 			new BigDecimal("9800"), Set.of("20%OFF"));
 
 		ResponseEntity<Product> createResponse = restTemplate
@@ -43,7 +43,7 @@ class ProductApplicationTests {
 		assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
 		var productResponse = getResponse.getBody();
-		assertEquals(2L, productResponse.getId());
+		assertEquals(4L, productResponse.getId());
 		assertEquals("Mac Book Pro", productResponse.getName());
 	}
 

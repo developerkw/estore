@@ -39,9 +39,13 @@ public class DataLoader {
         sampleProductList.add(productRepository.save(product1));
         var product2 = ModelUtil.createProduct(2, "iphone 13", "Mobile", 26, new BigDecimal("7800"), Set.of("20%OFF"));
         sampleProductList.add(productRepository.save(product2));
+        var product3 = ModelUtil.createProduct(3, "Dyson hair dryer", "HairDryer", 226, new BigDecimal("3500"), Set.of("BUY_1_50%_OFF_THE_SECOND"));
+        sampleProductList.add(productRepository.save(product3));
 
         var basket = ModelUtil.createBasket("testuser", product1, 3);
         basketRepository.save(basket);
+        var basket2 = ModelUtil.createBasket("testuser", product2, 2);
+        basketRepository.save(basket2);
 
         log.info("Sample data loaded into the DB");
     }

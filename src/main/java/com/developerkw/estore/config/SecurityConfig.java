@@ -27,7 +27,12 @@ public class SecurityConfig {
             .password(passwordEncoder.encode("qrs456"))
             .roles("CUSTOMER")
             .build();
-        return new InMemoryUserDetailsManager(sarah, testuser);
+        UserDetails testuser2 = User.builder()
+            .username("testuser2")
+            .password(passwordEncoder.encode("efg789"))
+            .roles("CUSTOMER")
+            .build();
+        return new InMemoryUserDetailsManager(sarah, testuser, testuser2);
     }
 
     @Bean

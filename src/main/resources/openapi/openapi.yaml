@@ -142,32 +142,6 @@ paths:
         - basic_auth:
             - write:baskets
             - read:baskets
-    put:
-      tags:
-        - basket
-      summary: Update an existing basket
-      description: Update an existing basket by username
-      operationId: updateBasket
-      requestBody:
-        description: Update an existent basket in the store
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BasketItemDto'
-        required: true
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BasketItemDto'
-        '400':
-          description: Invalid ID supplied
-        '404':
-          description: Basket not found
-        '405':
-          description: Validation exception
     get:
       tags:
         - basket
@@ -191,12 +165,21 @@ paths:
         - basic_auth:
             - write:baskets
             - read:baskets
+  /basket/{id}:
     delete:
       tags:
         - basket
-      summary: Deletes a basket item
-      description: delete a basket item
+      summary: Deletes a basket item by id
+      description: delete a basket item by id
       operationId: deleteBasket
+      parameters:
+        - name: id
+          in: path
+          description: Basket item id to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         '400':
           description: Invalid user name value
