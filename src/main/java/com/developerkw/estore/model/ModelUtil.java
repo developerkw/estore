@@ -16,10 +16,11 @@ public class ModelUtil {
         return product;
     }
 
-    public static Basket createBasket(String name, Set<Product> products) {
-        var basket = new Basket();
-        basket.setUserName(name);
-        basket.setProducts(products);
-        return basket;
+    public static BasketItem createBasket(String name, Product product, int quantity) {
+        var basketItem = new BasketItem();
+        basketItem.setUserName(name);
+        basketItem.setProduct(product);
+        basketItem.setQuantity(quantity);
+        return basketItem;
     }
 }
