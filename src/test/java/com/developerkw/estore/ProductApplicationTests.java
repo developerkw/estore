@@ -10,6 +10,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.test.annotation.DirtiesContext;
 
 import java.math.BigDecimal;
@@ -120,6 +121,17 @@ class ProductApplicationTests {
 		var productResponseAfterUpdate = response.getBody();
 		assertEquals(1L, productResponseAfterUpdate.getId());
 		assertEquals(newSetOfDiscounts, productResponseAfterUpdate.getDiscounts());
+	}
+
+	@Test
+	void shouldNotUpdateIfItemNotExist() {
+		var product = new Product();
+		product.setId(260L);
+		HttpEntity<Product> request = new HttpEntity<>(product);
+		ResponseEntity<Void> updateResponse = restTemplate
+			.withBasicAuth("bullish", "abc123")
+			.exchange("/product", HttpMethod.PUT, request, Void.class);
+		assertThat(updateResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 	}
 
 	@Test

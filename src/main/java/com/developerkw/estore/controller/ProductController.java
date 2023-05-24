@@ -36,8 +36,9 @@ public class ProductController {
     private ResponseEntity<Void> putProduct(@RequestBody Product product) {
         if (productRepository.existsById(product.getId())) {
             productRepository.save(product);
+            return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")

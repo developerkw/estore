@@ -80,6 +80,16 @@ class BasketApplicationTests {
 	}
 
 	@Test
+	void shouldReturnNotFoundIfNoItem() {
+		ResponseEntity<BasketItem[]> response = restTemplate
+			.withBasicAuth("testuser2", "efg789")
+			.getForEntity("/basket", BasketItem[].class);
+
+		assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+		assertNull(response.getBody());
+	}
+
+	@Test
 	void shouldDeleteAnExistingBasketItem() {
 		ResponseEntity<Void> response = restTemplate
 			.withBasicAuth("testuser", "qrs456")
@@ -116,5 +126,15 @@ class BasketApplicationTests {
 		assertEquals(new BigDecimal("41400.00"), receiptResponse.getPurchases().get(0).getDiscountedTotalPrice());
 		assertEquals(new BigDecimal("8580.00"), receiptResponse.getPurchases().get(1).getDiscountedTotalPrice());
 		assertEquals(new BigDecimal("49980.00"), receiptResponse.getTotalPrice());
+	}
+
+	@Test
+	void shouldReturnNotFoundIfNoItemToCheckout() {
+		ResponseEntity<ReceiptDto> response = restTemplate
+			.withBasicAuth("testuser2", "efg789")
+			.getForEntity("/basket/checkout", ReceiptDto.class);
+
+		assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+		assertNull(response.getBody());
 	}
 }
