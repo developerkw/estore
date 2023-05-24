@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 /**
- * Assume this one will be calculated based on the original price.
+ * Assume the discount amount will be calculated based on the original price.
  */
 public class Buy1AndSecond50PercentOff implements Discount {
     @Override
