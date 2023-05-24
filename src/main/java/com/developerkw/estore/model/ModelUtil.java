@@ -1,11 +1,11 @@
 package com.developerkw.estore.model;
 
 import java.math.BigDecimal;
-import java.util.Set;
+import java.util.List;
 
 public class ModelUtil {
 
-    public static Product createProduct(long id, String name, String category, int stock, BigDecimal price, Set<String> discounts) {
+    public static Product createProduct(long id, String name, String category, int stock, BigDecimal price, List<String> discounts) {
         var product = new Product();
         product.setId(id);
         product.setName(name);

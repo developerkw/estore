@@ -2,6 +2,7 @@ package com.developerkw.estore;
 
 import com.developerkw.estore.model.BasketItem;
 import com.developerkw.estore.model.ModelUtil;
+import com.developerkw.estore.model.ReceiptDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,6 +11,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
+
+import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -46,14 +49,14 @@ class BasketApplicationTests {
 		ResponseEntity<BasketItem[]> response = restTemplate
 			.withBasicAuth("testuser", "qrs456")
 			.getForEntity("/basket", BasketItem[].class);
-
 		assertEquals(HttpStatus.OK, response.getStatusCode());
+
 		var basketResponse = response.getBody();
 		assertEquals(2, basketResponse.length);
 		assertEquals(1, basketResponse[0].getId());
 		assertEquals("testuser", basketResponse[0].getUserName());
 		assertEquals(dataLoader.getSampleProductList().get(0).getId(), basketResponse[0].getProduct().getId());
-		assertEquals(3, basketResponse[0].getQuantity());
+		assertEquals(4, basketResponse[0].getQuantity());
 	}
 
 	@Test
@@ -100,4 +103,18 @@ class BasketApplicationTests {
 		assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 	}
 
+	@Test
+	void shouldGenerateCorrectReceipt() {
+		ResponseEntity<ReceiptDto> response = restTemplate
+			.withBasicAuth("testuser", "qrs456")
+			.getForEntity("/basket/checkout", ReceiptDto.class);
+		assertEquals(HttpStatus.OK, response.getStatusCode());
+
+		var receiptResponse = response.getBody();
+		assertEquals(2, receiptResponse.getPurchases().size());
+		assertEquals("testuser", receiptResponse.getUsername());
+		assertEquals(new BigDecimal("41400.00"), receiptResponse.getPurchases().get(0).getDiscountedTotalPrice());
+		assertEquals(new BigDecimal("8580.00"), receiptResponse.getPurchases().get(1).getDiscountedTotalPrice());
+		assertEquals(new BigDecimal("49980.00"), receiptResponse.getTotalPrice());
+	}
 }

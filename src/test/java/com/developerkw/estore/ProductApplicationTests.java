@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 
 import java.math.BigDecimal;
-import java.util.Set;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,7 +29,7 @@ class ProductApplicationTests {
 	@Test
 	void shouldCreateANewProduct() {
 		var newProduct = ModelUtil.createProduct(4L, "Mac Book Pro", "Laptop", 120,
-			new BigDecimal("9800"), Set.of("20%OFF"));
+			new BigDecimal("9800"), List.of("20%OFF"));
 
 		ResponseEntity<Product> createResponse = restTemplate
 			.withBasicAuth("bullish", "abc123")
@@ -61,7 +61,7 @@ class ProductApplicationTests {
 		assertEquals("Mobile", productResponse.getCategory());
 		assertEquals(328, productResponse.getStock());
 		assertEquals(new BigDecimal("13800.00"), productResponse.getPrice());
-		assertEquals(Set.of("BUY_3_GET_1_FREE"), productResponse.getDiscounts());
+		assertEquals(List.of("BUY_3_GET_1_FREE"), productResponse.getDiscounts());
 	}
 
 	@Test
@@ -103,9 +103,9 @@ class ProductApplicationTests {
 
 		var productResponse = response.getBody();
 		assertEquals(1L, productResponse.getId());
-		assertEquals(Set.of("BUY_3_GET_1_FREE"), productResponse.getDiscounts());
+		assertEquals(List.of("BUY_3_GET_1_FREE"), productResponse.getDiscounts());
 
-		var newSetOfDiscounts = Set.of("BUY_3_GET_1_FREE", "20%OFF");
+		var newSetOfDiscounts = List.of("BUY_3_GET_1_FREE", "20%OFF");
 		productResponse.setDiscounts(newSetOfDiscounts);
 		HttpEntity<Product> request = new HttpEntity<>(productResponse);
 		ResponseEntity<Void> updateResponse = restTemplate

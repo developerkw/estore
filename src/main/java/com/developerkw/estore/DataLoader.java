@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Slf4j
 @Component
@@ -35,14 +34,14 @@ public class DataLoader {
     public void runAfterStartup() {
         log.info("Going to populate some testing data");
 
-        var product1 = ModelUtil.createProduct(1, "Samsung Fold 4", "Mobile", 328, new BigDecimal("13800"), Set.of("BUY_3_GET_1_FREE"));
+        var product1 = ModelUtil.createProduct(1, "Samsung Fold 4", "Mobile", 328, new BigDecimal("13800"), List.of("BUY_3_GET_1_FREE"));
         sampleProductList.add(productRepository.save(product1));
-        var product2 = ModelUtil.createProduct(2, "iphone 13", "Mobile", 26, new BigDecimal("7800"), Set.of("20%OFF"));
+        var product2 = ModelUtil.createProduct(2, "iphone 13", "Mobile", 26, new BigDecimal("7800"), List.of("OFF_20_PERCENT", "BUY_1_50_PERCENT_OFF_THE_SECOND"));
         sampleProductList.add(productRepository.save(product2));
-        var product3 = ModelUtil.createProduct(3, "Dyson hair dryer", "HairDryer", 226, new BigDecimal("3500"), Set.of("BUY_1_50%_OFF_THE_SECOND"));
+        var product3 = ModelUtil.createProduct(3, "Dyson hair dryer", "HairDryer", 226, new BigDecimal("3500"), List.of("BUY_1_50_PERCENT_OFF_THE_SECOND"));
         sampleProductList.add(productRepository.save(product3));
 
-        var basket = ModelUtil.createBasket("testuser", product1, 3);
+        var basket = ModelUtil.createBasket("testuser", product1, 4);
         basketRepository.save(basket);
         var basket2 = ModelUtil.createBasket("testuser", product2, 2);
         basketRepository.save(basket2);

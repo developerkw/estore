@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Data
@@ -25,6 +25,6 @@ public class Product {
 
     private BigDecimal price;
 
-    private Set<String> discounts;
+    private List<String> discounts;
 
 }

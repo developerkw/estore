@@ -11,7 +11,7 @@ import java.math.RoundingMode;
 public class PercentOff20 implements Discount {
     @Override
     public PurchaseDto apply(PurchaseDto purchase) {
-        var newDiscountedTotalPrice = new BigDecimal(0.8)
+        var newDiscountedTotalPrice = new BigDecimal("0.8")
             .multiply(purchase.getDiscountedTotalPrice());
         purchase.setDiscountedTotalPrice(newDiscountedTotalPrice.setScale(2, RoundingMode.HALF_UP));
 

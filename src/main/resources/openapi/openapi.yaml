@@ -200,9 +200,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ReceiptDto'
+                $ref: '#/components/schemas/ReceiptDto'
         '400':
           description: Invalid user name supplied
         '404':
@@ -239,7 +237,6 @@ components:
           example: 399.9
         discounts:
           type: array
-          uniqueItems: true
           items:
             type: string
             example: BUY_1_50%_OFF_THE_SECOND
