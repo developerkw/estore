@@ -171,7 +171,7 @@ paths:
         - basket
       summary: Deletes a basket item by id
       description: delete a basket item by id
-      operationId: deleteBasket
+      operationId: deleteBasketItem
       parameters:
         - name: id
           in: path
@@ -183,6 +183,30 @@ paths:
       responses:
         '400':
           description: Invalid user name value
+      security:
+        - basic_auth:
+            - write:baskets
+            - read:baskets
+  /basket/checkout:
+    get:
+      tags:
+        - basket
+      summary: Generate receipt according to items in basket
+      description: Return receipt including all items, discounts applied and total price
+      operationId: checkout
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReceiptDto'
+        '400':
+          description: Invalid user name supplied
+        '404':
+          description: No item found
       security:
         - basic_auth:
             - write:baskets
@@ -239,6 +263,39 @@ components:
           type: integer
           format: int32
           example: 2
+    ReceiptDto:
+      required:
+        - username
+      type: object
+      properties:
+        username:
+          type: string
+          example: testuser
+        purchases:
+          type: array
+          items:
+            $ref: '#/components/schemas/PurchaseDto'
+        totalPrice:
+          type: number
+          example: 599.85
+    PurchaseDto:
+      required:
+        - product
+        - quantity
+      type: object
+      properties:
+        product:
+          $ref: '#/components/schemas/ProductDto'
+        quantity:
+          type: integer
+          format: int32
+          example: 2
+        originalTotalPrice:
+          type: number
+          example: 799.8
+        discountedTotalPrice:
+          type: number
+          example: 599.85
 
   securitySchemes:
     basic_auth:
