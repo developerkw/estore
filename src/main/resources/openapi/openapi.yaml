@@ -64,6 +64,10 @@ paths:
           description: Product not found
         '405':
           description: Validation exception
+      security:
+        - basic_auth:
+            - write:products
+            - read:products
   /product/{productId}:
     get:
       tags:
@@ -169,7 +173,7 @@ paths:
     delete:
       tags:
         - basket
-      summary: Deletes a basket item by id
+      summary: Delete a basket item by id
       description: delete a basket item by id
       operationId: deleteBasketItem
       parameters:

@@ -95,6 +95,7 @@
 					<output>file</output>
 					<append>true</append>
 					<excludes>
+						<exclude>**/estore/EstoreApplication.class</exclude>
 						<exclude>**/estore/model/*</exclude>
 						<exclude>**/estore/api/*</exclude>
 					</excludes>

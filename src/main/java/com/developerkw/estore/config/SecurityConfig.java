@@ -40,7 +40,7 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(
                 authorize -> authorize
-                    .requestMatchers("/product/**", "/v3/api-docs", "/swagger-resources/**", "/swagger-ui/**").hasRole("ADMIN")
+                    .requestMatchers("/product/**", "/v3/api-docs/**", "/swagger-resources/**", "/swagger-ui/**", "/swagger-ui.html").hasRole("ADMIN")
                     .requestMatchers("/basket/**").hasRole("CUSTOMER")
             )
             .httpBasic(Customizer.withDefaults());
