@@ -5,6 +5,8 @@ Current functions include product management for admin and shopping cart for cus
 User account management is assumed to be done by a separate system, so sample users are
 configured in SecurityConfig.java.
 
+The discount rules are configured in the discounts list in Product and will be applied according to the order in the list. The discount rules are per product based.
+
 ## Run and Test
 The following guides illustrate how run and test the app:
 
