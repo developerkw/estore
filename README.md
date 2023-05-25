@@ -7,6 +7,9 @@ configured in SecurityConfig.java.
 
 The discount rules are configured in the discounts list in Product and will be applied according to the order in the list. The discount rules are per product based.
 
+## Prerequisites 
+* Java17
+
 ## Run and Test
 The following guides illustrate how run and test the app:
 
